@@ -1,7 +1,7 @@
 version: 2026.232.0520
 openclaw:
     candy:
-        version: 2026.200.0158
+        version: 2026.243.0100
         description: |
             Headless OpenClaw AI gateway service on port 18789
             Installs the openclaw npm package globally (package.json ->
@@ -15,9 +15,9 @@ openclaw:
             and a `data` volume persists ~/.openclaw. Binary presence, the
             supervised service, and the reachable port are all verifiable.
         require:
-            - '@github.com/opencharly/layer-nodejs:v2026.235.2056'
-            - '@github.com/opencharly/layer-socat:v2026.235.2057'
-            - '@github.com/opencharly/layer-supervisord:v2026.235.2056'
+            - '@github.com/opencharly/layer-nodejs:v2026.239.1624'
+            - '@github.com/opencharly/layer-socat:v2026.240.0229'
+            - '@github.com/opencharly/layer-supervisord:v2026.240.0121'
         env:
             NODE_ENV: "production"
         port:
