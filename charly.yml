@@ -1,11 +1,11 @@
 version: 2026.232.0520
 openclaw:
     candy:
-        version: 2026.243.0100
+        version: 2026.246.0100
         description: |
-            Headless OpenClaw AI gateway service on port 18789
-            Installs the openclaw npm package globally (package.json ->
-            npm install -g) so the gateway binary lands at
+            Headless OpenClaw AI gateway service on port 18789 (OpenClaw 2.0,
+            npm openclaw@2026.8.x). Installs the openclaw npm package globally
+            (package.json -> npm install -g) so the gateway binary lands at
             ~/.npm-global/bin/openclaw, then runs it as the supervised
             `openclaw` service (`openclaw gateway --port 18789
             --allow-unconfigured --bind loopback` — loopback bind needs no
@@ -13,7 +13,8 @@ openclaw:
             gateway start before any operator setup). socat
             relays the loopback-bound gateway onto the container interface
             and a `data` volume persists ~/.openclaw. Binary presence, the
-            supervised service, and the reachable port are all verifiable.
+            supervised service, the reachable port, and the gateway's own
+            /healthz liveness endpoint are all verifiable.
         require:
             - '@github.com/opencharly/layer-nodejs:v2026.239.1624'
             - '@github.com/opencharly/layer-socat:v2026.240.0229'
@@ -44,8 +45,14 @@ openclaw:
             - check: the openclaw gateway reports the exact security-patched package version
               exit_status: 0
               stdout:
-                - matches: "2026\\.7\\.1-2"
+                - matches: "2026\\.8\\.2"
               command: ${HOME}/.npm-global/bin/openclaw --version
+            - check: the running gateway's /healthz liveness endpoint responds 200 (OpenClaw 2.0 container probe)
+              context:
+                - runtime
+              http:
+                http: http://127.0.0.1:${HOST_PORT:18789}/healthz
+                status: 200
             - check: the openclaw gateway runs as a supervised service
               context:
                 - runtime
@@ -72,7 +79,7 @@ openclaw-skill:
         content: |-
             # openclaw
             
-            Headless OpenClaw AI gateway — no desktop, no browser, just the gateway service.
+            Headless OpenClaw AI gateway (OpenClaw 2.0, npm openclaw@2026.8.x) — no desktop, no browser, just the gateway service.
             
             ## Box Properties
             
@@ -120,7 +127,7 @@ openclaw-skill:
             After `charly start`:
             - `charly status openclaw` — container running
             - `charly service status openclaw` — all services RUNNING
-            - `curl -s http://localhost:18789` — OpenClaw gateway responds
+            - `curl -s http://localhost:18789/healthz` — OpenClaw gateway liveness (2.0 container probe)
             
             ## Port Relay Architecture
             
