@@ -1,7 +1,5 @@
-version: 2026.232.0520
 openclaw:
     candy:
-        version: 2026.246.0300
         description: |
             Headless OpenClaw AI gateway service on port 18789 (OpenClaw 2.0,
             npm openclaw@2026.9.1 — the current latest stable). Installs the openclaw npm package globally
