@@ -14,9 +14,9 @@ openclaw:
             supervised service, the reachable port, and the gateway's own
             /healthz liveness endpoint are all verifiable.
         require:
-            - '@github.com/opencharly/layer-nodejs:v2026.239.1624'
-            - '@github.com/opencharly/layer-socat:v2026.240.0229'
-            - '@github.com/opencharly/layer-supervisord:v2026.240.0121'
+            - '@github.com/opencharly/layer-nodejs:v2026.272.0322'
+            - '@github.com/opencharly/layer-socat:v2026.272.0422'
+            - '@github.com/opencharly/layer-supervisord:v2026.271.1817'
         env:
             NODE_ENV: "production"
         port:
