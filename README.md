@@ -22,7 +22,7 @@ container interface, and a `data` volume persists `~/.openclaw`.
 | Volume | `data` at `~/.openclaw` |
 | Env | `NODE_ENV=production` |
 | Alias | `openclaw` |
-| Package | `openclaw@2026.9.1` |
+| Package | `openclaw@2026.9.8` |
 
 ## How to use it
 
@@ -34,16 +34,17 @@ charly start openclaw
 ```
 
 The candy's own `check:` steps assert the gateway binary in the npm global bin,
-the exact package version (`2026.9.1`), the running gateway's `/healthz` liveness
-endpoint (`200`), the supervised `openclaw` service, and the reachable published
-port.
+the exact pinned package version (`2026.9.8`), the in-image Node satisfying
+openclaw's engine range (`>=24.16.0 <25 || >=26.1.0` — node 22 and 25.x are
+excluded since 2026.9.3), the running gateway's `/healthz` liveness endpoint
+(`200`), the supervised `openclaw` service, and the reachable published port.
 
 ## Layout
 
 - `charly.yml` — the `openclaw:` candy entity (description, `require`, `env`,
   `port`, `port_relay`, `volume`, `alias`, `service`, `plan`) plus its `skill:`
   entity.
-- `package.json` — the npm dependency pin (`openclaw@2026.9.1`).
+- `package.json` — the npm dependency pin (`openclaw@2026.9.8`).
 - `openclaw.service` — a systemd unit reference for the gateway.
 - `.github/workflows/tag-on-merge.yml` — CalVer tag + `CHANGELOG/` on merge.
 - `CHANGELOG/` — per-CalVer history.
