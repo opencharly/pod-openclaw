@@ -1,61 +1,21 @@
-# pod-openclaw
+# pod-openclaw — RETIRED
 
-The `openclaw` candy of the OpenCharly candy library, as a standalone repo
-(kind-prefixed naming). It ships a headless OpenClaw AI gateway service on port
-`18789` — no desktop, no browser, just the gateway.
+This repo is retired: the OpenClaw family was consolidated into
+[`opencharly/openclaw`](https://github.com/opencharly/openclaw)
+(opencharly/opencharly#431), which now owns the gateway layer, the gateway image,
+the disposable R10 bed and both skills.
 
-## What it provides
+What moved in this cutover, and where it lives now:
 
-Installs the `openclaw` npm package globally (`package.json` → `npm install -g`)
-so the gateway binary lands at `~/.npm-global/bin/openclaw`, then runs it as the
-supervised `openclaw` service (`openclaw gateway --port 18789
---allow-unconfigured --bind loopback`). The loopback bind needs no auth and
-matches the socat relay; `--allow-unconfigured` lets the headless gateway start
-before any operator setup. socat relays the loopback-bound gateway onto the
-container interface, and a `data` volume persists `~/.openclaw`.
-
-| Property | Value |
+| was here | is now |
 |---|---|
-| Service | `openclaw` (`%(ENV_HOME)s/.npm-global/bin/openclaw gateway --port 18789 --allow-unconfigured --bind loopback`, `restart: always`) |
-| Port | `18789` (`port_relay: 18789` via socat) |
-| Requires | `layer-nodejs`, `layer-socat`, `layer-supervisord` |
-| Volume | `data` at `~/.openclaw` |
-| Env | `NODE_ENV=production` |
-| Alias | `openclaw` |
-| Package | `openclaw@2026.9.1` |
+| the `openclaw:` candy (`charly.yml`) | `candy/openclaw/charly.yml` |
+| the npm pin (`package.json`) | `candy/openclaw/package.json` |
+| the systemd unit reference (`openclaw.service`) | `candy/openclaw/openclaw.service` |
+| the owning skill (`openclaw-skill:`) | `box/openclaw/charly.yml`, projected as `/charly-openclaw:openclaw` |
 
-## How to use it
-
-```bash
-charly box build openclaw
-charly config openclaw
-charly start openclaw
-# gateway at http://localhost:18789
-```
-
-The candy's own `check:` steps assert the gateway binary in the npm global bin,
-the exact package version (`2026.9.1`), the running gateway's `/healthz` liveness
-endpoint (`200`), the supervised `openclaw` service, and the reachable published
-port.
-
-## Layout
-
-- `charly.yml` — the `openclaw:` candy entity (description, `require`, `env`,
-  `port`, `port_relay`, `volume`, `alias`, `service`, `plan`) plus its `skill:`
-  entity.
-- `package.json` — the npm dependency pin (`openclaw@2026.9.1`).
-- `openclaw.service` — a systemd unit reference for the gateway.
-- `.github/workflows/tag-on-merge.yml` — CalVer tag + `CHANGELOG/` on merge.
-- `CHANGELOG/` — per-CalVer history.
-- `README.md` — this user overview.
-
-## Related
-
-- Owning skill: `/charly-openclaw:openclaw` — the headless gateway box, its
-  ports, and verification.
-- `/charly-openclaw:openclaw-full` — the maximal variant (gateway + browser +
-  all tools).
-- `/charly-automation:openclaw-deploy` — the gateway configuration, model auth,
-  and browser/channel setup.
-- [`opencharly/charly`](https://github.com/opencharly/charly) — the charly CLI and image builder
-- [`opencharly/opencharly`](https://github.com/opencharly/opencharly) — the umbrella
+The gateway image is `box/openclaw` there, its layer skill is
+`/charly-openclaw:openclaw-layer`, and the disposable R10 witness is
+`check-openclaw-pod`. This repo's released tags keep the old content exactly as it
+was released; nothing should compose this repo. It is kept only until the operator
+archives it.
