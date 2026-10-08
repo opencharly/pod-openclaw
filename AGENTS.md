@@ -9,7 +9,7 @@ Canonical files:
 - `charly.yml` — the `openclaw:` candy entity (description, `require`, `env`,
   `port`, `port_relay`, `volume`, `alias`, `service`, `plan`) and its `skill:`
   entity.
-- `package.json` — the npm dependency pin (`openclaw@2026.9.1`).
+- `package.json` — the npm dependency pin (`openclaw@2026.9.8`).
 - `openclaw.service` — a systemd unit reference for the gateway.
 - `.github/workflows/tag-on-merge.yml` — CalVer tag + `CHANGELOG/` on merge.
 - `CHANGELOG/` — per-CalVer history.
@@ -36,9 +36,11 @@ Canonical files:
 - `charly box validate` at the repo root — the structural check: the manifest
   must parse and validate at the installed charly.
 - The live R10 witness is a composing box's `check` bed; the candy's own `check:`
-  steps assert the gateway binary in the npm global bin, the exact package
-  version (`2026.9.1`), the running gateway's `/healthz` `200`, the supervised
-  `openclaw` service, and the reachable published port.
+  steps assert the gateway binary in the npm global bin, the exact pinned package
+  version (`2026.9.8`), the in-image Node satisfying openclaw's engine range
+  (`>=24.16.0 <25 || >=26.1.0` — node 22 and 25.x are excluded since 2026.9.3),
+  the running gateway's `/healthz` `200`, the supervised `openclaw` service, and
+  the reachable published port.
 - The merge gate is the **org-wide** `charly/pr-validator` (required check
   `validate / validate`, defined in `opencharly/.github`); this repo has **no**
   per-repo candy gate. Its only workflow file is
